@@ -28,11 +28,14 @@ def get_page_content():
 
     soup = BeautifulSoup(response.text, "html.parser")
 
+    # Eliminamos elementos que no forman parte del contenido visible.
     for element in soup(["script", "style", "noscript"]):
         element.decompose()
 
+    # Extraemos todo el texto visible.
     text = soup.get_text("\n", strip=True)
 
+    # Normalizamos espacios y saltos de línea.
     text = "\n".join(
         line.strip()
         for line in text.splitlines()
@@ -67,15 +70,8 @@ def send_telegram(message):
 
 
 def main():
+
     print("Comprobando página...")
-
-    # PRUEBA TEMPORAL DE TELEGRAM
-    send_telegram(
-        "🧪 PRUEBA DEL BOT\n\n"
-        "Si recibís este mensaje, Telegram está conectado correctamente. 🚨"
-    )
-
-    print("Mensaje de prueba enviado a Telegram.")
 
     content = get_page_content()
     current_hash = calculate_hash(content)
@@ -86,14 +82,18 @@ def main():
         with open(STATE_FILE, "r") as file:
             previous_hash = file.read().strip()
 
+    # Primera ejecución.
     if previous_hash is None:
+
         with open(STATE_FILE, "w") as file:
             file.write(current_hash)
 
         print("Primera ejecución. Estado guardado.")
         return
 
+    # Detectamos un cambio.
     if current_hash != previous_hash:
+
         print("CAMBIO DETECTADO.")
 
         message = (
@@ -110,6 +110,7 @@ def main():
         print("Aviso enviado a Telegram.")
 
     else:
+
         print("Sin cambios.")
 
 
