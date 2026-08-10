@@ -67,12 +67,16 @@ def send_telegram(message):
 
 
 def main():
-
     print("Comprobando página...")
-send_telegram(
-    "🧪 PRUEBA DEL BOT\n\n"
-    "Si recibís este mensaje, Telegram está conectado correctamente. 🚨"
-)
+
+    # PRUEBA TEMPORAL DE TELEGRAM
+    send_telegram(
+        "🧪 PRUEBA DEL BOT\n\n"
+        "Si recibís este mensaje, Telegram está conectado correctamente. 🚨"
+    )
+
+    print("Mensaje de prueba enviado a Telegram.")
+
     content = get_page_content()
     current_hash = calculate_hash(content)
 
@@ -83,21 +87,13 @@ send_telegram(
             previous_hash = file.read().strip()
 
     if previous_hash is None:
-
         with open(STATE_FILE, "w") as file:
             file.write(current_hash)
 
         print("Primera ejecución. Estado guardado.")
-
-        send_telegram(
-            "🧪 PRUEBA DEL BOT\n\n"
-            "¡Telegram funciona correctamente! 🚨"
-        )
-
         return
 
     if current_hash != previous_hash:
-
         print("CAMBIO DETECTADO.")
 
         message = (
@@ -114,7 +110,6 @@ send_telegram(
         print("Aviso enviado a Telegram.")
 
     else:
-
         print("Sin cambios.")
 
 
