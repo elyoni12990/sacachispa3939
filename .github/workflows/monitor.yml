@@ -6,6 +6,7 @@ on:
   workflow_dispatch:  # Manual trigger
   push:               # Or add a push trigger temporarily
     branches: [main]
+    
   workflow_dispatch:
 
 permissions:
