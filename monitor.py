@@ -4,7 +4,6 @@ import requests
 import urllib3
 from bs4 import BeautifulSoup
 
-# Desactivamos el warning por el certificado SSL de FMED
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 URL = "https://www.fmed.uba.ar/index.php/depto/toxico1/grado.htm"
@@ -29,14 +28,11 @@ def get_page_content():
 
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Eliminamos elementos que no forman parte del contenido visible.
     for element in soup(["script", "style", "noscript"]):
         element.decompose()
 
-    # Extraemos todo el texto visible.
     text = soup.get_text("\n", strip=True)
 
-    # Normalizamos espacios y saltos de línea.
     text = "\n".join(
         line.strip()
         for line in text.splitlines()
@@ -83,22 +79,20 @@ def main():
         with open(STATE_FILE, "r") as file:
             previous_hash = file.read().strip()
 
-# Primera ejecución.
-if previous_hash is None:
+    if previous_hash is None:
 
-    with open(STATE_FILE, "w") as file:
-        file.write(current_hash)
+        with open(STATE_FILE, "w") as file:
+            file.write(current_hash)
 
-    print("Primera ejecución. Estado guardado.")
+        print("Primera ejecución. Estado guardado.")
 
-    send_telegram(
-        "🧪 PRUEBA DEL BOT\n\n"
-        "¡Telegram funciona correctamente! 🚨"
-    )
+        send_telegram(
+            "🧪 PRUEBA DEL BOT\n\n"
+            "¡Telegram funciona correctamente! 🚨"
+        )
 
-    return
+        return
 
-    # Detectamos un cambio.
     if current_hash != previous_hash:
 
         print("CAMBIO DETECTADO.")
