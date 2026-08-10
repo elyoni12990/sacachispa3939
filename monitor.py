@@ -1,7 +1,11 @@
 import os
 import hashlib
 import requests
+import urllib3
 from bs4 import BeautifulSoup
+
+# Desactivamos el warning por el certificado SSL de FMED
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 URL = "https://www.fmed.uba.ar/index.php/depto/toxico1/grado.htm"
 
@@ -17,7 +21,8 @@ def get_page_content():
         timeout=30,
         headers={
             "User-Agent": "Mozilla/5.0"
-        }
+        },
+        verify=False
     )
 
     response.raise_for_status()
