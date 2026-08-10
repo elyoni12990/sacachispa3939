@@ -69,7 +69,10 @@ def send_telegram(message):
 def main():
 
     print("Comprobando página...")
-
+send_telegram(
+    "🧪 PRUEBA DEL BOT\n\n"
+    "Si recibís este mensaje, Telegram está conectado correctamente. 🚨"
+)
     content = get_page_content()
     current_hash = calculate_hash(content)
 
