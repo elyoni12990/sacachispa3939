@@ -83,14 +83,20 @@ def main():
         with open(STATE_FILE, "r") as file:
             previous_hash = file.read().strip()
 
-    # Primera ejecución.
-    if previous_hash is None:
+# Primera ejecución.
+if previous_hash is None:
 
-        with open(STATE_FILE, "w") as file:
-            file.write(current_hash)
+    with open(STATE_FILE, "w") as file:
+        file.write(current_hash)
 
-        print("Primera ejecución. Estado guardado.")
-        return
+    print("Primera ejecución. Estado guardado.")
+
+    send_telegram(
+        "🧪 PRUEBA DEL BOT\n\n"
+        "¡Telegram funciona correctamente! 🚨"
+    )
+
+    return
 
     # Detectamos un cambio.
     if current_hash != previous_hash:
